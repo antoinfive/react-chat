@@ -1,2 +1,11 @@
-# react-pair
-pair program with real humans on real code problems with the help of React + Redux, CodeMirror and Socket.io
+# React Redux Starter Kit
+
+For when you just can't has all the set-up anymore, you just can't. 
+
+## Instructions
+
+* clone
+* `npm install`
+* `npm start`
+
+Write the codez.
