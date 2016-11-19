@@ -17,10 +17,9 @@ class ChatContainer extends Component {
 
   componentDidMount(){
      socket.on('chat message', (message) => {
-      this.setState({ 
-        messages: [...this.state.messages, message] 
-      }) 
-    })
+       this.props.newMessage(message) 
+       console.log('received message', message)
+     })
   }
 
   handleOnChange(ev) {
@@ -36,13 +35,13 @@ class ChatContainer extends Component {
   
   handleOnSubmit(ev) {
     ev.preventDefault()
-    this.props.newMessage(this.state.input)
+    // this.props.newMessage(this.state.input)
     this.setState({ input: '' })
     socket.emit('chat message', this.state.input)
   }
 
   render() {
-    const messages = this.props.messages.map( (message) => {
+    const messages = this.props.messages.map((message) => {
       return ( <li> {message} </li> )
     })
     return (
