@@ -38,9 +38,6 @@ class ChatContainer extends Component {
   }
 
   render() {
-    const center = {
-      textAlign: 'center'
-    }
     return (
       <div>
         <PageHeader> Welcome to React Chat </PageHeader>
@@ -68,6 +65,7 @@ class ChatContainer extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
+  debugger
   return { messages: state.activeRoom.messages, room: state.activeRoom }
 }
 

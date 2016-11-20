@@ -5,7 +5,8 @@ import activeRoom from './activeRoomReducer'
 
 const rootReducer = combineReducers({
   messages,
-  rooms
+  rooms,
+  activeRoom
 })
 
 export default rootReducer

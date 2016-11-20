@@ -1,23 +1,30 @@
 import React, { Component } from 'react'
 import { ListGroup, ListGroupItem, Col } from 'react-bootstrap'
 import { connect } from 'react-redux'
+import * as roomActions from '../../actions/roomActions'
+import { bindActionCreators } from 'redux'
 
 class RoomsContainer extends Component { 
   constructor(props){
-    debugger
     super()
+    this.handleOnClick = this.handleOnClick.bind(this)
   }
-  
+
+  handleOnClick(room){
+   debugger; 
+    this.props.joinRoom(room)   
+  }  
   render() {
     const rooms = this.props.rooms.map( (room) => { 
       return ( 
-        <ListGroupItem onClick={()=> { console.log('gotem')}}>
+        <ListGroupItem key={room.title} onClick={this.handleOnClick.bind(null, room)}>
           {room.title}
         </ListGroupItem> 
       )
     })
+
     return (
-      <div >
+      <div>
         <Col xs={4} mdPull={1}> 
           <ListGroup>
             {rooms}
@@ -33,4 +40,9 @@ class RoomsContainer extends Component {
 function mapStateToProps(state, ownProps) {
   return { rooms: state.rooms }
 }
-export default connect(mapStateToProps)(RoomsContainer)
+
+function mapDispatchToProps(dispatch) { 
+  return bindActionCreators({ joinRoom: roomActions.joinRoom}, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(RoomsContainer)

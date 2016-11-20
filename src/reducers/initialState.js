@@ -13,7 +13,7 @@ export default {
   
   rooms: [
     { title: 'Music is Life', 
-     messages: [ { user: 'antoin', message: 'its lit'}, { user:'Mac Miller', mesage: 'fam I know'} ]
+     messages: [ { user: 'antoin', message: 'its lit'}, { user:'Mac Miller', message: 'fam I know'} ]
      },
     { title: 'Come share your feelings',
      messages: [ {user: 'Scott Mescudi', message: 'I love you all'}, {user: 'Antoin', message: 'We love you Scott!'}] 
@@ -21,8 +21,9 @@ export default {
   ],
 
   activeRoom: {
-    title: '',
-    messages: []
+    title: 'Music is Life',
+    messages: [ { user: 'antoin', message: 'its lit'}, { user:'Mac Miller', message: 'fam I know'} ]
+
   }
 
 }
