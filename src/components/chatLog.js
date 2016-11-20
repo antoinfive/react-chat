@@ -1,17 +1,22 @@
 import React from 'react'
 import { Col, Grid, Row } from 'react-bootstrap' 
 import ChatDetail from './chatDetail'
-
+import RoomsContainer from './containers/roomsContainer'
 export default (props) => {
+  
+  const messages = props.messages.map ( (message) => {
+    return ( <ChatDetail user={message.user} message={message.message} /> ) })
+     
   return (
     <div>
-      <Grid>
+      <Grid> 
         <Row className="show-grid">
-          <Col xs={13} md={8} />
-          <Col xs={6} md={4} />
-            <ChatDetail /> 
-        </Row>
-      </Grid>
+          <RoomsContainer /> 
+           <Col xs={8} xs={8}>
+              {messages} 
+            </Col>    
+         </Row>
+      </Grid> 
     </div>
   )
 

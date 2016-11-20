@@ -1,14 +1,13 @@
 import React from 'react'
-import { Alert } from 'react-bootstrap'
+import { Alert, Panel } from 'react-bootstrap'
 
 export default (props) => {
+  debugger;
   return (
     <div>
-      <Alert bsStyle="warning">
-        <strong> Antoin </strong> : this will be a message
-      </Alert>
+      <Panel bsStyle="info" header={props.user}>
+        {props.message} 
+      </Panel>
     </div>
   )
-
-
 }
