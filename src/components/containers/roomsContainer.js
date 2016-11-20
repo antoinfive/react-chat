@@ -1,19 +1,26 @@
 import React, { Component } from 'react'
 import { ListGroup, ListGroupItem, Col } from 'react-bootstrap'
+import { connect } from 'react-redux'
 
 class RoomsContainer extends Component { 
-  constructor(){
+  constructor(props){
+    debugger
     super()
   }
   
   render() {
+    const rooms = this.props.rooms.map( (room) => { 
+      return ( 
+        <ListGroupItem onClick={()=> { console.log('gotem')}}>
+          {room.title}
+        </ListGroupItem> 
+      )
+    })
     return (
       <div >
         <Col xs={4} mdPull={1}> 
           <ListGroup>
-            <ListGroupItem> Music Group </ListGroupItem>
-            <ListGroupItem> The Cosmos </ListGroupItem> 
-            <ListGroupItem> I'm sad, halp </ListGroupItem>
+            {rooms}
           </ListGroup>
         </Col>
       </div>
@@ -23,4 +30,7 @@ class RoomsContainer extends Component {
 
 }
 
-export default RoomsContainer
+function mapStateToProps(state, ownProps) {
+  return { rooms: state.rooms }
+}
+export default connect(mapStateToProps)(RoomsContainer)
