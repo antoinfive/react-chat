@@ -6,7 +6,7 @@ import open from 'open';
 import favicon from 'serve-favicon';
 import socket from 'socket.io'
 import { Server } from 'http'
-
+import bodyParse from 'body-parser'
 /* eslint-disable no-console */
 
 const port = 3000;  
@@ -33,8 +33,8 @@ io.on('connection', function(socket) {
   })
 
   socket.on('chat message', function(msg) {
-    console.log(msg)
-    io.sockets.emit('chat message', msg) 
+     console.log(JSON.stringify(msg))
+    io.sockets.emit('chat message', JSON.stringify(msg)) 
   })
 });
 

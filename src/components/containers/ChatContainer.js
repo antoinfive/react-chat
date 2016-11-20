@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as messageActions from '../../actions/messagesActions'
+import * as roomActions from '../../actions/roomActions'
 import { bindActionCreators } from 'redux'
 import ChatLog from '../chatLog'
 import { Glyphicon, InputGroup, PageHeader, Col, Button, FormGroup, FormControl } from 'react-bootstrap'
@@ -19,9 +20,9 @@ class ChatContainer extends Component {
    }  
 
   componentDidMount(){
-     socket.on('chat message', (message) => {
-       this.props.newMessage({user: 'antoin', message: message}) 
-       console.log('received message', message)
+     socket.on('chat message', (inboundMessage) => {
+       this.props.newMessage({room: this.props.room, newMessage: {user: 'antoin', message: inboundMessage}}) 
+       console.log('received message', inboundMessage)
      })
   }
 
@@ -32,9 +33,9 @@ class ChatContainer extends Component {
   
   handleOnSubmit(ev) {
     ev.preventDefault()
-    // this.props.newMessage(this.state.input)
+     // this.props.newMessage(this.state.input)
+    socket.emit('chat message', {message: this.state.input, room: this.props.room.title})
     this.setState({ input: '' })
-    socket.emit('chat message', this.state.input)
   }
 
   render() {
@@ -65,7 +66,6 @@ class ChatContainer extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  debugger
   return { messages: state.activeRoom.messages, room: state.activeRoom }
 }
 

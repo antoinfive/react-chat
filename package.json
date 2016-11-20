@@ -12,6 +12,7 @@
     "lint:watch": "npm run lint -- --watch"
   },
   "dependencies": {
+    "body-parser": "^1.15.2",
     "bootstrap": "^3.3.7",
     "react": "^15.3.1",
     "react-bootstrap": "^0.30.6",
