@@ -14,6 +14,7 @@ const app = express();
 const server = Server(app)
 const compiler = webpack(config);
 const io = socket(server) 
+
 app.use(require('webpack-dev-middleware')(compiler, {  
   noInfo: true,
   publicPath: config.output.publicPath
@@ -33,7 +34,7 @@ io.on('connection', function(socket) {
 
   socket.on('chat message', function(msg) {
     console.log(msg)
-   io.emit.broadcast('chat message', msg) 
+    io.sockets.emit('chat message', msg) 
   })
 });
 
