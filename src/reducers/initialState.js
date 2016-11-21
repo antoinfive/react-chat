@@ -1,19 +1,19 @@
 export default {
   messages: [
     { user: 'Antoin',
-      message: 'yo this is lit'
+      message: 'this are happening'
     }, 
     { user: 'Mac Miller',
-      message: 'some would say, the most lit'
+      message: 'I tots agree'
     },
     { user: 'Scott Mescudi',
-      message: 'bout to go dumb with the hums'
+      message: '!!!!!!!!!!!!!!!! I feel immortal'
     } 
   ],
   
   rooms: [
     { title: 'Music is Life', 
-     messages: [ { user: 'antoin', message: 'its lit'}, { user:'Mac Miller', message: 'fam I know'} ]
+     messages: [ { user: 'antoin', message: 'via sockets yo'}, { user:'Mac Miller', message: 'I know, so many sockets'} ]
      },
     { title: 'Come share your feelings',
      messages: [ {user: 'Scott Mescudi', message: 'I love you all'}, {user: 'Antoin', message: 'We love you Scott!'}] 
@@ -22,7 +22,7 @@ export default {
 
   activeRoom: {
     title: 'Music is Life',
-    messages: [ { user: 'antoin', message: 'its lit'}, { user:'Mac Miller', message: 'fam I know'} ]
+    messages: [ { user: 'antoin', message: 'via sockets yo'}, { user:'Mac Miller', message: 'I know, so many sockets'} ]
 
   }
 

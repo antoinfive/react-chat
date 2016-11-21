@@ -51,7 +51,7 @@ io.on('connection', function(socket) {
   socket.on('chat message', function(msg) {
     console.log('sending message to', room)
     console.log('this message', msg)
-    io.to(room).emit('chat message', JSON.stringify(msg)) 
+    io.to(msg.room).emit('chat message', JSON.stringify(msg)) 
   })
 });
 

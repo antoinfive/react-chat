@@ -4,7 +4,8 @@ import * as messageActions from '../../actions/messagesActions'
 import * as roomActions from '../../actions/roomActions'
 import { bindActionCreators } from 'redux'
 import ChatLog from '../chatLog'
-import { Glyphicon, InputGroup, PageHeader, Col, Button, FormGroup, FormControl } from 'react-bootstrap'
+import FileUpload from '../fileUpload'
+import {Glyphicon, InputGroup, PageHeader, Col, Button, FormGroup, FormControl } from 'react-bootstrap'
 
 const socket = io();
 
@@ -13,6 +14,8 @@ class ChatContainer extends Component {
     super()
      this.state = { 
        input : '',
+       file: '',
+       imagePreviewUrl: '',
        messages: props.messages,
        connected: false
      }
@@ -49,6 +52,23 @@ class ChatContainer extends Component {
     this.setState({ input: '' })
   }
 
+  handleOnUpload(ev) {
+    debugger
+   ev.preventDefault()
+    
+    let reader = new FileReader()
+    let file = ev.target.files[0] 
+    
+    reader.onloadend = () => { 
+      this.setState({
+        file: file,
+        imagePreviewUrl: reader.result
+      });
+
+    reader.readAsDataUrl(file)
+    }
+  }
+
   render() {
     return (
       <div>
@@ -58,14 +78,15 @@ class ChatContainer extends Component {
           <FormGroup>
             <InputGroup>
             <FormControl onChange={this.handleOnChange} value={this.state.input}/>
-            <InputGroup.Addon onClick={ () => { console.log('got em')}}> 
+            <InputGroup.Addon > 
               <Glyphicon glyph="music" />
               </InputGroup.Addon>
             <InputGroup.Button> 
               <Button bsStyle="primary" type="submit" onClick={this.handleOnSubmit}> Send </Button>
             </InputGroup.Button>
           </InputGroup>
-          </FormGroup>
+        </FormGroup>
+        <FileUpload onChange={this.handleOnUpload}/> 
         </form>
     
       <h1> 
