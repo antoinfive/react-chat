@@ -6,20 +6,31 @@ import { bindActionCreators } from 'redux'
 import ChatLog from '../chatLog'
 import { Glyphicon, InputGroup, PageHeader, Col, Button, FormGroup, FormControl } from 'react-bootstrap'
 
+const socket = io();
 
 class ChatContainer extends Component { 
   constructor(props) {
-   
-     super()
+    super()
      this.state = { 
        input : '',
-       messages: props.messages 
+       messages: props.messages,
+       connected: false
      }
      this.handleOnChange = this.handleOnChange.bind(this)
      this.handleOnSubmit = this.handleOnSubmit.bind(this)
-   }  
+    }  
+  
+  componentWillMount() {
+      if(!(this.state.connected)){ 
+        socket.emit('subscribe', {room: this.props.room.title})
+        this.setState({connected: true})
+     }
+  
+    console.log('will mount initated')
+   }
 
   componentDidMount(){
+    console.log('did mount')
      socket.on('chat message', (inboundMessage) => {
        this.props.newMessage({room: this.props.room, newMessage: {user: 'antoin', message: inboundMessage}}) 
        console.log('received message', inboundMessage)
@@ -33,8 +44,8 @@ class ChatContainer extends Component {
   
   handleOnSubmit(ev) {
     ev.preventDefault()
-     // this.props.newMessage(this.state.input)
     socket.emit('chat message', {message: this.state.input, room: this.props.room.title})
+    // this.props.newMessage({room: this.props.room, newMessage: {user: 'antoin', message: this.state.input}})
     this.setState({ input: '' })
   }
 

@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import * as roomActions from '../../actions/roomActions'
 import { bindActionCreators } from 'redux'
 
+const socket = io();
+
 class RoomsContainer extends Component { 
   constructor(props){
     super()
@@ -11,7 +13,8 @@ class RoomsContainer extends Component {
   }
 
   handleOnClick(room){
-   debugger; 
+    socket.emit('unsubscribe') 
+    socket.emit("subscribe", { room: room.title})
     this.props.joinRoom(room)   
   }  
   render() {
@@ -38,7 +41,7 @@ class RoomsContainer extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  return { rooms: state.rooms }
+ return { rooms: state.rooms }
 }
 
 function mapDispatchToProps(dispatch) { 

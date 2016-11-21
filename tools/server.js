@@ -14,6 +14,7 @@ const app = express();
 const server = Server(app)
 const compiler = webpack(config);
 const io = socket(server) 
+var room;
 
 app.use(require('webpack-dev-middleware')(compiler, {  
   noInfo: true,
@@ -27,14 +28,30 @@ app.get('*', function(req, res) {
 });
 
 io.on('connection', function(socket) {
-  console.log('a user connected');
+  console.log('a user connected')
+  socket.on('subscribe', (data) => {
+    room = data.room
+    socket.join(room)
+    console.log('joined room', room) 
+  }
+  )
+  socket.on('unsubscribe', () => { socket.leave(room) 
+    console.log('leaving room', room) 
+  })
   socket.on('disconnect', () => {
     console.log('a user disconnected')
   })
 
+  // io.sockets.on('connect', (socket) => {
+  //   socket.on('subscribe', (data) => {
+  //     console.log('joined a room')
+  //   })
+  // })
+
   socket.on('chat message', function(msg) {
-     console.log(JSON.stringify(msg))
-    io.sockets.emit('chat message', JSON.stringify(msg)) 
+    console.log('sending message to', room)
+    console.log('this message', msg)
+    io.to(room).emit('chat message', JSON.stringify(msg)) 
   })
 });
 
