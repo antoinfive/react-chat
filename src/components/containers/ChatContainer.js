@@ -4,14 +4,15 @@ import * as messageActions from '../../actions/messagesActions'
 import * as roomActions from '../../actions/roomActions'
 import { bindActionCreators } from 'redux'
 import ChatLog from '../chatLog'
-import FileUpload from '../fileUpload'
-import {Glyphicon, InputGroup, PageHeader, Col, Button, FormGroup, FormControl } from 'react-bootstrap'
+import FileUploader from '../fileUpload'
+import { Image, Glyphicon, InputGroup, PageHeader, Col, Button, FormGroup, FormControl } from 'react-bootstrap'
 
+const io = require('socket.io-client')
 const socket = io();
 
 class ChatContainer extends Component { 
   constructor(props) {
-    super()
+    super(props)
      this.state = { 
        input : '',
        file: '',
@@ -19,21 +20,39 @@ class ChatContainer extends Component {
        messages: props.messages,
        connected: false
      }
+
      this.handleOnChange = this.handleOnChange.bind(this)
      this.handleOnSubmit = this.handleOnSubmit.bind(this)
+     this._handleMessageEvent = this._handleMessageEvent.bind(this)
     }  
-  
+
+
   componentWillMount() {
       if(!(this.state.connected)){ 
         socket.emit('subscribe', {room: this.props.room.title})
         this.setState({connected: true})
      }
-  
+    socket.on('file_upload_success', (fileName) => {
+      console.log('file upload action was emitted', fileName)
+      this.setState({ imageUrl: fileName })
+    })
+    // this._handleMessageEvent()
     console.log('will mount initated')
    }
 
   componentDidMount(){
+    debugger
     console.log('did mount')
+    this._handleMessageEvent()
+     // socket.on('chat message', (inboundMessage) => {
+
+     //   this.props.newMessage({room: this.props.room, newMessage: {user: 'antoin', message: inboundMessage}}) 
+     //   console.log('received message', inboundMessage)
+     // })
+  }
+
+  _handleMessageEvent(){
+    debugger;
      socket.on('chat message', (inboundMessage) => {
        this.props.newMessage({room: this.props.room, newMessage: {user: 'antoin', message: inboundMessage}}) 
        console.log('received message', inboundMessage)
@@ -52,28 +71,28 @@ class ChatContainer extends Component {
     this.setState({ input: '' })
   }
 
-  handleOnUpload(ev) {
-    debugger
-   ev.preventDefault()
-    
-    let reader = new FileReader()
-    let file = ev.target.files[0] 
-    
-    reader.onloadend = () => { 
-      this.setState({
-        file: file,
-        imagePreviewUrl: reader.result
-      });
-
-    reader.readAsDataUrl(file)
-    }
+  handleOnUpload(imageUrl) {
+     this.setState({
+      imagePreviewUrl: imageUrl
+    })
   }
 
   render() {
+    let imageView;
+    if(this.state.imageUrl) {
+      imageView = (
+        <div> 
+          <Col xs={6} md={4}> 
+            <image className="image-preview" src={this.state.imageUrl}  />
+          </Col>
+        </div>
+      )
+    }
+          
     return (
       <div>
         <PageHeader> Welcome to React Chat </PageHeader>
-        <ChatLog messages={this.props.messages} />
+        <ChatLog messages={this.props.messages} image={this.state.imageUrl || ''}/>
         <form>
           <FormGroup>
             <InputGroup>
@@ -86,9 +105,9 @@ class ChatContainer extends Component {
             </InputGroup.Button>
           </InputGroup>
         </FormGroup>
-        <FileUpload onChange={this.handleOnUpload}/> 
         </form>
-    
+        <FileUploader /> 
+      
       <h1> 
        
      </h1>

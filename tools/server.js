@@ -7,6 +7,7 @@ import favicon from 'serve-favicon';
 import socket from 'socket.io'
 import { Server } from 'http'
 import bodyParse from 'body-parser'
+import fs from 'fs' 
 /* eslint-disable no-console */
 
 const port = 3000;  
@@ -23,6 +24,8 @@ app.use(require('webpack-dev-middleware')(compiler, {
 
 app.use(require('webpack-hot-middleware')(compiler));  
 
+// app.use(express.static('public'))
+
 app.get('*', function(req, res) {  
   res.sendFile(path.join( __dirname, '../src/index.html'));
 });
@@ -33,7 +36,7 @@ io.on('connection', function(socket) {
     room = data.room
     socket.join(room)
     console.log('joined room', room) 
-  }
+   }
   )
   socket.on('unsubscribe', () => { socket.leave(room) 
     console.log('leaving room', room) 
@@ -51,7 +54,23 @@ io.on('connection', function(socket) {
   socket.on('chat message', function(msg) {
     console.log('sending message to', room)
     console.log('this message', msg)
-    io.to(msg.room).emit('chat message', JSON.stringify(msg)) 
+    io.to(room).emit('chat message', JSON.stringify(msg)) 
+  })
+
+  socket.on('file_upload', (name, buffer) => {
+    const fileName = __dirname + '/tmp/uploads/' + name;
+    
+    fs.open(fileName, 'a', 0, (err, fd) => {
+      if (err) throw err;
+
+      fs.write(fd, buffer, null, 'Binary', (err, written, buff) => {
+        fs.close(fd, () => {
+          console.log('file saved successfully!')
+        });
+      })
+    })
+    console.log('reached room, sending to', room)
+    socket.to(room).emit('file_upload_success', buffer) 
   })
 });
 

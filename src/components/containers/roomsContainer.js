@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import * as roomActions from '../../actions/roomActions'
 import { bindActionCreators } from 'redux'
 
+const io = require('socket.io-client')
 const socket = io();
 
 class RoomsContainer extends Component { 
@@ -11,7 +12,7 @@ class RoomsContainer extends Component {
     super()
     this.handleOnClick = this.handleOnClick.bind(this)
   }
-
+  
   handleOnClick(room){
     socket.emit('unsubscribe') 
     socket.emit("subscribe", { room: room.title})
