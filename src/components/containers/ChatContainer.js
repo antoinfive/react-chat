@@ -7,9 +7,6 @@ import ChatLog from '../chatLog'
 import FileUploader from '../fileUpload'
 import { Image, Glyphicon, InputGroup, PageHeader, Col, Button, FormGroup, FormControl } from 'react-bootstrap'
 
-const io = require('socket.io-client')
-const socket = io();
-
 class ChatContainer extends Component { 
   constructor(props) {
     super(props)
@@ -24,7 +21,7 @@ class ChatContainer extends Component {
      this.handleOnChange = this.handleOnChange.bind(this)
      this.handleOnSubmit = this.handleOnSubmit.bind(this)
      this._handleMessageEvent = this._handleMessageEvent.bind(this)
-    }  
+   }  
 
 
   componentWillMount() {
@@ -41,18 +38,11 @@ class ChatContainer extends Component {
    }
 
   componentDidMount(){
-    debugger
-    console.log('did mount')
-    this._handleMessageEvent()
-     // socket.on('chat message', (inboundMessage) => {
-
-     //   this.props.newMessage({room: this.props.room, newMessage: {user: 'antoin', message: inboundMessage}}) 
-     //   console.log('received message', inboundMessage)
-     // })
+   console.log('did mount')
+   this._handleMessageEvent()  
   }
 
   _handleMessageEvent(){
-    debugger;
      socket.on('chat message', (inboundMessage) => {
        this.props.newMessage({room: this.props.room, newMessage: {user: 'antoin', message: inboundMessage}}) 
        console.log('received message', inboundMessage)
@@ -107,13 +97,11 @@ class ChatContainer extends Component {
         </FormGroup>
         </form>
         <FileUploader /> 
-      
-      <h1> 
-       
-     </h1>
+  
    </div>
     )
   }
+
 }
 
 function mapStateToProps(state, ownProps) {
