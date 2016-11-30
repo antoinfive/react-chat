@@ -97,7 +97,7 @@ class ChatContainer extends Component {
         </FormGroup>
         </form>
         <FileUploader /> 
-  
+ 
    </div>
     )
   }
