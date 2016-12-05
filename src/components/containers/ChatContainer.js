@@ -31,7 +31,8 @@ class ChatContainer extends Component {
      }
     socket.on('file_upload_success', (fileName) => {
       console.log('file upload action was emitted', fileName)
-      this.setState({ imageUrl: fileName })
+      // this.setState({ imageUrl: fileName })
+      this.props.newMessage({room: this.props.room, newMessage: { user: 'antoin', imageUrl: fileName}})
     })
     // this._handleMessageEvent()
     console.log('will mount initated')
@@ -69,15 +70,15 @@ class ChatContainer extends Component {
 
   render() {
     let imageView;
-    if(this.state.imageUrl) {
+    let path = 'no99.gif' 
       imageView = (
         <div> 
           <Col xs={6} md={4}> 
-            <image className="image-preview" src={this.state.imageUrl}  />
+            <img src={path} />
           </Col>
         </div>
       )
-    }
+    
           
     return (
       <div>
@@ -97,7 +98,7 @@ class ChatContainer extends Component {
         </FormGroup>
         </form>
         <FileUploader /> 
- 
+      {imageView} 
    </div>
     )
   }

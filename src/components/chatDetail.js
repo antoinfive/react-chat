@@ -2,7 +2,8 @@ import React from 'react'
 import { Col, Alert, Panel, Image } from 'react-bootstrap'
 
 export default (props) => {
- let imageView;
+  let imageView;
+  
   if(props.image) {
     imageView = (
       <div> 
@@ -16,7 +17,7 @@ export default (props) => {
     <div>
       <Panel bsStyle="info" header={props.user}>
         {props.message} 
-    
+        {imageView || ''} 
       </Panel>
     </div>
   )

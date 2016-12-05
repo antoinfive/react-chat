@@ -24,7 +24,7 @@ app.use(require('webpack-dev-middleware')(compiler, {
 
 app.use(require('webpack-hot-middleware')(compiler));  
 
-// app.use(express.static('public'))
+app.use(express.static('tools/tmp/uploads'))
 
 app.get('*', function(req, res) {  
   res.sendFile(path.join( __dirname, '../src/index.html'));
@@ -70,7 +70,7 @@ io.on('connection', function(socket) {
       })
     })
     console.log('reached room, sending to', room)
-    socket.broadcast.to(room).emit('file_upload_success', buffer) 
+    io.to(room).emit('file_upload_success', buffer) 
   })
 });
 

@@ -31,6 +31,7 @@ class RoomsContainer extends Component {
   handleOnChange(ev) {
     this.setState({input: ev.target.value})
   }
+
   render() {
     const rooms = this.props.rooms.map( (room) => { 
       return ( 

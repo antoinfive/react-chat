@@ -2,10 +2,11 @@ import React from 'react'
 import { Col, Grid, Row } from 'react-bootstrap' 
 import ChatDetail from './chatDetail'
 import RoomsContainer from './containers/roomsContainer'
+
 export default (props) => {
-  
+   
   const messages = props.messages.map ( (message) => {
-    return ( <ChatDetail user={message.user} message={message.message} image={props.image}/> ) })
+    return ( <ChatDetail user={message.user} message={message.message} image={message.imageUrl}/> ) })
      
   return (
     <div>
@@ -19,8 +20,6 @@ export default (props) => {
       </Grid> 
     </div>
   )
-
-
 }
 
 
