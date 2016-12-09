@@ -10,9 +10,10 @@ import { Image, Glyphicon, InputGroup, PageHeader, Col, Button, FormGroup, FormC
 class ChatContainer extends Component { 
   constructor(props) {
     super(props)
+    
      this.state = { 
        input : '',
-       file: '',
+       user: localStorage.getItem('user'),
        imagePreviewUrl: '',
        messages: props.messages,
        connected: false
@@ -72,7 +73,7 @@ class ChatContainer extends Component {
          
     return (
       <div>
-        <PageHeader> Welcome to React Chat </PageHeader>
+        <PageHeader> Welcome to React Chat, {this.state.user} </PageHeader>
         <ChatLog messages={this.props.messages} image={this.state.imageUrl || ''}/>
         <form>
           <FormGroup>

@@ -13,8 +13,8 @@ export default class App extends React.Component {
   }
   
   updateUser(user){
-    this.setState({ user })
-    localStorage.setItem('user', this.state.input)
+    this.setState({user: user })
+    localStorage.setItem('user', user)
   } 
 
   currentUser(){
