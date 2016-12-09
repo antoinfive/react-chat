@@ -30,7 +30,7 @@
 18 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:226:5)
 19 verbose pkgid react-pair@1.0.0
 20 verbose cwd /Users/flatironschool/Development/code/React/ReactChat/ReactChatApp/tools/tmp/uploads
-21 error Darwin 16.0.0
+21 error Darwin 16.1.0
 22 error argv "/usr/local/Cellar/node/6.5.0/bin/node" "/usr/local/bin/npm" "start"
 23 error node v6.5.0
 24 error npm  v3.10.3

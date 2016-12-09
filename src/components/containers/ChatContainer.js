@@ -69,17 +69,7 @@ class ChatContainer extends Component {
   }
 
   render() {
-    let imageView;
-    let path = 'no99.gif' 
-      imageView = (
-        <div> 
-          <Col xs={6} md={4}> 
-            <img src={path} />
-          </Col>
-        </div>
-      )
-    
-          
+         
     return (
       <div>
         <PageHeader> Welcome to React Chat </PageHeader>
@@ -98,7 +88,7 @@ class ChatContainer extends Component {
         </FormGroup>
         </form>
         <FileUploader /> 
-      {imageView} 
+
    </div>
     )
   }

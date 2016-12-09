@@ -60,16 +60,16 @@ io.on('connection', function(socket) {
   socket.on('file_upload', (name, buffer) => {
     const fileName = __dirname + '/tmp/uploads/' + name;
     
-    fs.open(fileName, 'a', 0, (err, fd) => {
+    fs.open(fileName, 'a+', (err, fd) => {
       if (err) throw err;
-
+        
       fs.write(fd, buffer, null, 'Binary', (err, written, buff) => {
         fs.close(fd, () => {
           console.log('file saved successfully!')
         });
       })
     })
-    console.log('reached room, sending to', room)
+    console.log('reached room, sending', fileName)
     io.to(room).emit('file_upload_success', buffer) 
   })
 });

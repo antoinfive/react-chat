@@ -8,7 +8,7 @@ export default (props) => {
     imageView = (
       <div> 
         <Col xs={6} md={4}>
-        <Image src={props.image} rounded />
+          <img className="image-rounded" src={props.image}  />
         </Col>
       </div>
     )
