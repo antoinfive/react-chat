@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
+import { connect } from 'react-redux' 
 
 class FileUploader extends Component {
-  constructor() {
+  constructor(props) {
     super()
 
     this.state = {
@@ -27,7 +28,7 @@ class FileUploader extends Component {
       filetype: this.state.filetype
     }
 
-  socket.emit('file_upload', data_object.filename, data_object.data_uri )
+  socket.emit('file_upload', {file: data_object.filename, user: this.props.user}, data_object.data_uri)
 
  }
 
@@ -67,7 +68,7 @@ handleFile(ev) {
       <div className='col-sm-12'>
         <form onSubmit={this.handleOnSubmit} encType="multipart/form-data">
           <input type="file" onChange={this.handleFile} />
-          <input disabled={this.state.processing} className="btn btn-primary" type="submit" value="Upload"/>
+          <input className="btn btn-primary" type="submit" value="Upload"/>
         </form>
         
       </div>
@@ -77,8 +78,11 @@ handleFile(ev) {
     }
   } 
 
+function mapStateToProps(state, ownProps){
+  return { user: state.user }
+}
 
-export default FileUploader;
+export default connect(mapStateToProps)(FileUploader);
 
 
 

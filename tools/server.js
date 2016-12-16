@@ -24,7 +24,7 @@ app.use(require('webpack-dev-middleware')(compiler, {
 
 app.use(require('webpack-hot-middleware')(compiler));  
 
-// app.use(express.static('public'))
+app.use(express.static('tools/tmp/uploads'))
 
 app.get('*', function(req, res) {  
   res.sendFile(path.join( __dirname, '../src/index.html'));
@@ -57,20 +57,22 @@ io.on('connection', function(socket) {
     io.to(msg.room).emit('chat message', JSON.stringify(msg)) 
   })
 
-  socket.on('file_upload', (name, buffer) => {
-    const fileName = __dirname + '/tmp/uploads/' + name;
+  socket.on('file_upload', (data, buffer) => {
+    console.log(data)
+    const user = data.user
+    const fileName = __dirname + '/tmp/uploads/' + data.file;
     
-    fs.open(fileName, 'a', 0, (err, fd) => {
+    fs.open(fileName, 'a+', (err, fd) => {
       if (err) throw err;
-
+        
       fs.write(fd, buffer, null, 'Binary', (err, written, buff) => {
         fs.close(fd, () => {
           console.log('file saved successfully!')
         });
       })
     })
-    console.log('reached room, sending to', room)
-    socket.broadcast.to(room).emit('file_upload_success', buffer) 
+    console.log('reached room, sending', fileName)
+    io.to(room).emit('file_upload_success', {file: buffer, user: user}) 
   })
 });
 
