@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import * as userActions from '../../actions/userActions'
+import { connect } from 'react-redux'
 import { InputGroup, Button, PageHeader, FormGroup, FormControl } from 'react-bootstrap'
 
 class WelcomePage extends Component { 
@@ -27,11 +29,11 @@ class WelcomePage extends Component {
     return (
       <div> 
        <PageHeader> Welcome! What would you like to be called? </PageHeader>   
-          <form> 
+          <form onSubmit={this.handleOnSubmit}> 
             <FormGroup> 
               <InputGroup value={this.state.input}>
                <FormControl onChange={this.handleOnChange} />
-               <Button bsStyle="primary" onClick={this.handleOnSubmit}> Submit </Button>
+               <Button bsStyle="primary" type='submit'> Submit </Button>
               </InputGroup>
             </FormGroup>
           </form>
@@ -40,4 +42,16 @@ class WelcomePage extends Component {
   }
 }
 
-export default WelcomePage;
+function mapStateToProps(state, ownProps){
+  return { user: state.user }
+}
+
+function mapDispatchToProps(dispatch){
+ return { 
+   newUser: (user) => {
+    dispatch(userActions.newUser(user))
+  }
+ }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(WelcomePage);

@@ -57,8 +57,10 @@ io.on('connection', function(socket) {
     io.to(msg.room).emit('chat message', JSON.stringify(msg)) 
   })
 
-  socket.on('file_upload', (name, buffer) => {
-    const fileName = __dirname + '/tmp/uploads/' + name;
+  socket.on('file_upload', (data, buffer) => {
+    console.log(data)
+    const user = data.user
+    const fileName = __dirname + '/tmp/uploads/' + data.file;
     
     fs.open(fileName, 'a+', (err, fd) => {
       if (err) throw err;
@@ -70,7 +72,7 @@ io.on('connection', function(socket) {
       })
     })
     console.log('reached room, sending', fileName)
-    io.to(room).emit('file_upload_success', buffer) 
+    io.to(room).emit('file_upload_success', {file: buffer, user: user}) 
   })
 });
 
