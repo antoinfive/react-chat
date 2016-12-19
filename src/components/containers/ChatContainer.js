@@ -22,21 +22,29 @@ class ChatContainer extends Component {
      this.handleOnSubmit = this.handleOnSubmit.bind(this)
      this._handleMessageEvent = this._handleMessageEvent.bind(this)
      this._handleFileUpload = this._handleFileUpload.bind(this)
+     this._init = this._init.bind(this)
    }  
 
 
   componentWillMount() {
-      if(!(this.state.connected)){ 
-        socket.emit('subscribe', {room: this.props.room.title})
-        this.setState({connected: true})
-     }
-      this._handleFileUpload()
-      console.log('will mount initated')
-   }
+    this._init()
+  }
 
   componentDidMount(){
-   console.log('did mount')
-   this._handleMessageEvent()  
+    console.log('did mount')
+    this._handleFileUpload()
+    this._handleMessageEvent()  
+  }
+
+  handleOnChange(ev) {
+    this.setState({ input: ev.target.value}) 
+  } 
+
+  handleOnSubmit(ev) {
+    ev.preventDefault()
+    socket.emit('chat message', {message: this.state.input, room: this.props.room.title, user: this.props.user})
+
+    this.setState({ input: '' })
   }
 
   _handleMessageEvent(){
@@ -52,23 +60,12 @@ class ChatContainer extends Component {
       this.props.newMessage({room: this.props.room, newMessage: { user: data.user, imageUrl: data.file}})
     })
   }
-
-  handleOnChange(ev) {
-   this.setState({ input: ev.target.value}) 
-  } 
-
   
-  handleOnSubmit(ev) {
-    ev.preventDefault()
-    socket.emit('chat message', {message: this.state.input, room: this.props.room.title, user: this.props.user})
-
-    this.setState({ input: '' })
-  }
-
-  handleOnUpload(imageUrl) {
-     this.setState({
-      imagePreviewUrl: imageUrl
-    })
+  _init(){
+    if(!(this.state.connected)){ 
+      socket.emit('subscribe', {room: this.props.room.title})
+        this.setState({connected: true})
+    }
   }
 
   render() {
