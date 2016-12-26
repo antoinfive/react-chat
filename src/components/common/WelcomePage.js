@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import * as userActions from '../../actions/userActions'
 import { connect } from 'react-redux'
 import { InputGroup, Button, PageHeader, FormGroup, FormControl } from 'react-bootstrap'
+import newMessage from '../../api/newMessage'
 
 class WelcomePage extends Component { 
   constructor(props){
@@ -21,6 +22,7 @@ class WelcomePage extends Component {
 
   handleOnSumbit(ev){
     ev.preventDefault()
+    newMessage({user: this.state.input})
     this.props.newUser(this.state.input)
     this.setState({ input: ''})
   }
