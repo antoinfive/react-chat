@@ -16,8 +16,6 @@ export function saveMessage(data) {
 export function createMessage(data) { 
   return (dispatch) => {
     return messageApi.newMessage(data).then((response) => {
-      debugger
-      console.log('this is the response', response)
       dispatch(saveMessage(response.data))
       return response
     })
