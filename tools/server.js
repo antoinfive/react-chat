@@ -92,7 +92,8 @@ db.once('open', () => {
       let message = new Message(req.body)
       message.save((err) => { 
         if (err) return err
-       })
+      })
+      res.json(req.body) 
   })
 
 })

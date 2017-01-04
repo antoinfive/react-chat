@@ -100,7 +100,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ newMessage: messageActions.newMessage }, dispatch)
+  return bindActionCreators({ newMessage: messageActions.createMessage }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatContainer)
