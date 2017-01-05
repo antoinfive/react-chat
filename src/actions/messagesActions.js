@@ -1,11 +1,10 @@
 import messageApi from '../api/messageApi' 
 
 export function saveMessage(data) {
-  let parsed;
   let payload; 
-  if(data.newMessage.message){
-    parsed = JSON.parse(data.newMessage.message)
-    payload = {room: data.room, newMessage: {user: data.newMessage.user, message: parsed.message}}
+  if(data.message){
+    payload = {room: data.room, newMessage: {user: data.message.user, message: data.message.message}}
+    debugger
   } else {
     payload = {room: data.room, newMessage: {user: data.newMessage.user, imageUrl: data.newMessage.imageUrl}}
   }
@@ -14,9 +13,9 @@ export function saveMessage(data) {
 }
 
 export function createMessage(data) { 
-  return (dispatch) => {
+ return (dispatch) => {
     return messageApi.newMessage(data).then((response) => {
-      dispatch(saveMessage(response.data))
+      dispatch(saveMessage({room: data.room, message: response.data}))
       return response
     })
   }

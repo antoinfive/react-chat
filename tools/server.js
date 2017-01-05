@@ -89,7 +89,7 @@ db.once('open', () => {
   
   app.post('/messages', (req, res) => {
     console.log(req.body)      
-      let message = new Message(req.body)
+      let message = new Message({user: req.body.user, content: req.body.message, room: room})
       message.save((err) => { 
         if (err) return err
       })

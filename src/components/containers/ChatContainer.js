@@ -49,7 +49,7 @@ class ChatContainer extends Component {
 
   _handleMessageEvent(){
     socket.on('chat message', (inboundMessage) => {
-       this.props.newMessage({room: this.props.room, newMessage: {user: JSON.parse(inboundMessage).user, message: inboundMessage}}) 
+       this.props.createMessage({room: this.props.room, newMessage: {user: JSON.parse(inboundMessage).user, message: inboundMessage}}) 
        console.log('received message', inboundMessage)
      })
   }
@@ -100,7 +100,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ newMessage: messageActions.createMessage }, dispatch)
+  return bindActionCreators({ createMessage: messageActions.createMessage }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatContainer)

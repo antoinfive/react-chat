@@ -1,8 +1,9 @@
 import axios from 'axios'
 
 class MessageApi {
-   static newMessage(message) { 
-     return axios.post('/messages', message)
+  static newMessage(message) {
+  let parsed = JSON.parse(message.newMessage.message)
+     return axios.post('/messages', parsed)
   }
 }
 
