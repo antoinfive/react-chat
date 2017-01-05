@@ -3,8 +3,7 @@ import messageApi from '../api/messageApi'
 export function saveMessage(data) {
   let payload; 
   if(data.message){
-    payload = {room: data.room, newMessage: {user: data.message.user, message: data.message.message}}
-    debugger
+    payload = {room: data.room, newMessage: {user: data.message.user, content: data.message.message}}
   } else {
     payload = {room: data.room, newMessage: {user: data.newMessage.user, imageUrl: data.newMessage.imageUrl}}
   }

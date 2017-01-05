@@ -61,7 +61,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) { 
-  return bindActionCreators({ joinRoom: roomActions.joinRoom, newRoom: roomActions.newRoom}, dispatch)
+  return bindActionCreators({ joinRoom: roomActions.fetchRoomData, newRoom: roomActions.newRoom}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(RoomsContainer)

@@ -30,6 +30,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('tools/tmp/uploads'))
 
+app.get('/messages', (req, res) => {
+  
+  Message.find({room: room}, (err, docs) => {
+    res.json(docs) 
+  })
+
+})  
+
 app.get('*', function(req, res) {
   res.sendFile(path.join( __dirname, '../src/index.html'));
 });
@@ -86,7 +94,8 @@ db.once('open', () => {
       open(`http://localhost:${port}`);
     }
  });
-  
+
+
   app.post('/messages', (req, res) => {
     console.log(req.body)      
       let message = new Message({user: req.body.user, content: req.body.message, room: room})

@@ -7,6 +7,7 @@ import ChatLog from '../chatLog'
 import FileUploader from '../fileUpload'
 import { Image, Glyphicon, InputGroup, PageHeader, Col, Button, FormGroup, FormControl } from 'react-bootstrap'
 
+
 class ChatContainer extends Component { 
   constructor(props) {
     super(props)
@@ -41,6 +42,7 @@ class ChatContainer extends Component {
   } 
 
   handleOnSubmit(ev) {
+    debugger
     ev.preventDefault()
     socket.emit('chat message', {message: this.state.input, room: this.props.room.title, user: this.props.user})
 
@@ -63,6 +65,7 @@ class ChatContainer extends Component {
   
   _init(){
     if(!(this.state.connected)){ 
+      this.props.fetchRoom()
       socket.emit('subscribe', {room: this.props.room.title})
         this.setState({connected: true})
     }
@@ -100,7 +103,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ createMessage: messageActions.createMessage }, dispatch)
+  return bindActionCreators({ createMessage: messageActions.createMessage, fetchRoom: roomActions.fetchRoomData}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatContainer)
