@@ -42,16 +42,15 @@ class ChatContainer extends Component {
   } 
 
   handleOnSubmit(ev) {
-    debugger
+    
     ev.preventDefault()
     socket.emit('chat message', {message: this.state.input, room: this.props.room.title, user: this.props.user})
-
     this.setState({ input: '' })
   }
 
   _handleMessageEvent(){
     socket.on('chat message', (inboundMessage) => {
-       this.props.createMessage({room: this.props.room, newMessage: {user: JSON.parse(inboundMessage).user, message: inboundMessage}}) 
+       this.props.createMessage({room: this.props.room, newMessage: {user: JSON.parse(inboundMessage).user, message: JSON.parse(inboundMessage).message}}) 
        console.log('received message', inboundMessage)
      })
   }
@@ -59,7 +58,7 @@ class ChatContainer extends Component {
   _handleFileUpload(){
     socket.on('file_upload_success', (data) => {
       console.log('file upload action was emitted', data.file)
-      this.props.newMessage({room: this.props.room, newMessage: { user: data.user, imageUrl: data.file}})
+      this.props.createMessage({room: this.props.room, newMessage: { user: data.user, imageUrl: data.file}})
     })
   }
   
@@ -103,7 +102,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ createMessage: messageActions.createMessage, fetchRoom: roomActions.fetchRoomData}, dispatch)
+  return bindActionCreators({ createMessage: messageActions.saveMessage, fetchRoom: roomActions.fetchRoomData}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatContainer)

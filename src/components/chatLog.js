@@ -6,7 +6,7 @@ import RoomsContainer from './containers/roomsContainer'
 export default (props) => {
    
   const messages = props.messages.map ( (message) => {
-    debugger
+
     return ( <ChatDetail user={message.user} message={message.content} image={message.imageUrl}/> ) })
      
   return (
