@@ -3,7 +3,7 @@ import { Col, Alert, Panel, Image } from 'react-bootstrap'
 
 export default (props) => {
   let imageView;
-  
+   
   if(props.image) {
     imageView = (
       <div> 

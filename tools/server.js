@@ -10,6 +10,10 @@ import bodyParser from 'body-parser'
 import fs from 'fs'
 import mongoose from 'mongoose'
 import Message from '../db/messageSchema'
+import { Binary } from 'mongodb'
+import serveStatic from 'serve-static'
+import imageDecoder from './imageDecoder'
+// import Image from '../db/imageSchema'
 /* eslint-disable no-console */
 
 
@@ -19,6 +23,7 @@ const server = Server(app)
 const compiler = webpack(config);
 const io = socket(server)
 var room;
+const staticPath = path.join(__dirname, '..', '/public')
 
 app.use(require('webpack-dev-middleware')(compiler, {
   noInfo: true,
@@ -28,7 +33,8 @@ app.use(require('webpack-dev-middleware')(compiler, {
 app.use(require('webpack-hot-middleware')(compiler));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.static('tools/tmp/uploads'))
+
+app.use(serveStatic(staticPath))
 
 app.get('/messages', (req, res) => {
   Message.find({room: room}, (err, docs) => {
@@ -37,7 +43,8 @@ app.get('/messages', (req, res) => {
 
 })  
 
-app.get('*', function(req, res) {
+app.get('/', function(req, res) {
+  console.log('get route caught this')
   res.sendFile(path.join( __dirname, '../src/index.html'));
 });
 
@@ -61,8 +68,7 @@ io.on('connection', function(socket) {
     console.log('sending message to', msg.room)
     console.log('this message', msg)
     let message = new Message({user: msg.user, content: msg.message, room: msg.room})
-
-     message.save((err) => { 
+    message.save((err) => { 
         if (err) return err
       })
      
@@ -72,19 +78,27 @@ io.on('connection', function(socket) {
   socket.on('file_upload', (data, buffer) => {
     console.log(data)
     const user = data.user
-    const fileName = __dirname + '/tmp/uploads/' + data.file;
+    const fileName = path.join(__dirname, '../public/images', data.file)
+    const tmpFileName = path.join('/images', data.file)
+    const imageBuffer = imageDecoder(buffer)      
 
     fs.open(fileName, 'a+', (err, fd) => {
       if (err) throw err;
 
-      fs.write(fd, buffer, null, 'Binary', (err, written, buff) => {
+      fs.writeFile(fileName, imageBuffer.data, {encoding: 'base64'}, (err) => { 
         fs.close(fd, () => {
+          let message = Message({user: user, room: room, image: tmpFileName})
+          
+          message.save((err) => {
+            if (err) return err
+          }) 
           console.log('file saved successfully!')
         });
       })
     })
+
     console.log('reached room, sending', fileName)
-    io.to(room).emit('file_upload_success', {file: buffer, user: user})
+    io.to(room).emit('file_upload_success', {file: tmpFileName, user: user})
   })
 });
 
@@ -93,21 +107,22 @@ const db = mongoose.connection;
 
 db.once('open', () => {
  server.listen(port, function(err) {
-    if (err) {
-      console.log(err);
-    } else {
-      open(`http://localhost:${port}`);
-    }
- });
+   if (err) {
+     console.log(err);
+   } else {
+     open(`http://localhost:${port}`);
+  }
+});
 
 
-  app.post('/messages', (req, res) => {
-    console.log(req.body)      
-      let message = new Message({user: req.body.user, content: req.body.message, room: room})
-      message.save((err) => { 
-        if (err) return err
-      })
-      res.json(req.body) 
-  })
+// app.post('/messages', (req, res) => {
+//   console.log(req.body)      
+//     let message = new Message({user: req.body.user, content: req.body.message, room: room})
+//     message.save((err) => { 
+//       if (err) return err
+//     })
+//       res.json(req.body) 
+//  })
 
 })
+
