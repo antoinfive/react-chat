@@ -58,7 +58,7 @@ class ChatContainer extends Component {
   _handleFileUpload(){
     socket.on('file_upload_success', (data) => {
       console.log('file upload action was emitted', data.file)
-      this.props.createMessage({room: this.props.room, newMessage: { user: data.user, imageUrl: data.file}})
+      this.props.createMessage({room: this.props.room, newMessage: { user: data.user, image: data.file}})
     })
   }
   
@@ -75,7 +75,7 @@ class ChatContainer extends Component {
     return (
       <div>
         <PageHeader> Welcome to React Chat, {this.props.user} </PageHeader>
-        <ChatLog messages={this.props.messages} image={this.state.imageUrl || ''}/>
+        <ChatLog messages={this.props.messages} image={''}/>
         <form>
           <FormGroup>
             <InputGroup>
