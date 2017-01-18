@@ -4,7 +4,7 @@ export default function activeRoomReducer(state = initialState.activeRoom, actio
   switch(action.type) {
     case 'JOIN_ROOM':
       return Object.assign({}, state.activeRoom, {
-        title: action.payload[0].room,
+        title: (action.payload.room || action.payload[0].room),
         messages: action.payload
       })
     case 'NEW_MESSAGE':

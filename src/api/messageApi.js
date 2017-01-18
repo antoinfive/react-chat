@@ -9,6 +9,14 @@ class MessageApi {
   static fetchRoom(){
     return axios.get('/messages')
   }
+
+ static createRoom(roomData){
+   return axios.post('/rooms', roomData) 
+ }
+
+ static fetchRoomList(){
+  return axios.get('/rooms')
+ }
 }
 
 export default MessageApi

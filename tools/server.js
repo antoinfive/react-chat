@@ -10,6 +10,7 @@ import bodyParser from 'body-parser'
 import fs from 'fs'
 import mongoose from 'mongoose'
 import Message from '../db/messageSchema'
+import Room from '../db/roomSchema'
 import { Binary } from 'mongodb'
 import serveStatic from 'serve-static'
 import imageDecoder from './imageDecoder'
@@ -22,8 +23,9 @@ const app = express();
 const server = Server(app)
 const compiler = webpack(config);
 const io = socket(server)
-var room;
 const staticPath = path.join(__dirname, '..', '/public')
+
+var room;
 
 app.use(require('webpack-dev-middleware')(compiler, {
   noInfo: true,
@@ -42,6 +44,30 @@ app.get('/messages', (req, res) => {
   })
 
 })  
+
+app.get('/rooms', (req, res) => {
+  console.log('in fetch rooms')
+  Room.find({}, (err, docs) => {
+    console.log(docs)
+    res.json(docs)
+  })
+})
+
+app.post('/rooms', (req, res) => {
+  let message = new Message({user: req.body.messages[0].user, content: req.body.messages[0].content, room: req.body.title})
+  console.log('message', message)
+  let room = new Room({title: req.body.title})
+
+  message.save((err) => {
+    if (err) return err
+  })
+
+  room.save((err) => {
+    if (err) return err
+  })
+
+  res.json(message)
+})
 
 app.get('/', function(req, res) {
   console.log('get route caught this')
@@ -73,6 +99,14 @@ io.on('connection', function(socket) {
       })
      
     io.to(msg.room).emit('chat message', JSON.stringify(msg))
+  })
+  
+  socket.on('new room', (roomData) => {
+    let message = new Message({user: roomData.user, content: roomData.message, room: roomData.room})
+    message.save((err) => {
+      if (err) return err
+    })
+    
   })
 
   socket.on('file_upload', (data, buffer) => {
