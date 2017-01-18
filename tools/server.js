@@ -48,7 +48,7 @@ app.get('/messages', (req, res) => {
 app.get('/rooms', (req, res) => {
   console.log('in fetch rooms')
   Room.find({}, (err, docs) => {
-    console.log(docs)
+    console.log('docs', docs)
     res.json(docs)
   })
 })

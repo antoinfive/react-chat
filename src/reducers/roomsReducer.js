@@ -6,7 +6,10 @@ export default function roomReducer(state = initialState.rooms, action) {
     case 'NEW_ROOM':
       return [...state, action.payload]
     case 'UPDATE_ROOM_LIST':
-      return action.payload.data  
+      if(action.payload.data.length < 1){
+        action.payload.data = false
+      }
+      return action.payload.data || state  
     default:
      return state; 
   }
