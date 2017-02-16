@@ -3,6 +3,7 @@ import * as userActions from '../../actions/userActions'
 import { connect } from 'react-redux'
 import { InputGroup, Button, PageHeader, FormGroup, FormControl } from 'react-bootstrap'
 
+
 class WelcomePage extends Component { 
   constructor(props){
     super(props) 

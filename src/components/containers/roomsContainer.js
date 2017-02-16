@@ -9,13 +9,19 @@ class RoomsContainer extends Component {
   constructor(props){
     super()
     this.state = {
-      input: ''
+      input: '',
+      connected: false
     }
     this.handleOnClick = this.handleOnClick.bind(this)
     this.handleNewRoom = this.handleNewRoom.bind(this)
     this.handleOnChange = this.handleOnChange.bind(this)
+    this.fetchRooms = this.fetchRooms.bind(this)
   }
-  
+
+  componentDidMount(){
+    this.fetchRooms()
+  } 
+
   handleOnClick(room){
     socket.emit("unsubscribe") 
     socket.emit("subscribe", { room: room.title})
@@ -32,8 +38,16 @@ class RoomsContainer extends Component {
     this.setState({input: ev.target.value})
   }
 
+  fetchRooms(){
+    if (!this.state.connected) { 
+      this.props.fetchRoomList()
+      this.state.connected = true
+    }
+  }
+
   render() {
-    const rooms = this.props.rooms.map( (room) => { 
+    const rooms = this.props.rooms.map((room) => { 
+    debugger
       return ( 
         <ListGroupItem key={room.title} onClick={this.handleOnClick.bind(null, room)}>
           {room.title}
@@ -61,7 +75,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) { 
-  return bindActionCreators({ joinRoom: roomActions.joinRoom, newRoom: roomActions.newRoom}, dispatch)
+  return bindActionCreators({ joinRoom: roomActions.fetchRoomData, newRoom: roomActions.newRoom, fetchRoomList: roomActions.fetchRoomList}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(RoomsContainer)

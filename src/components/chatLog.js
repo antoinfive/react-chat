@@ -4,9 +4,9 @@ import ChatDetail from './chatDetail'
 import RoomsContainer from './containers/roomsContainer'
 
 export default (props) => {
-   
   const messages = props.messages.map ( (message) => {
-    return ( <ChatDetail user={message.user} message={message.message} image={message.imageUrl}/> ) })
+
+    return ( <ChatDetail user={message.user} message={message.content} image={message.image || ''}/> ) })
      
   return (
     <div>
